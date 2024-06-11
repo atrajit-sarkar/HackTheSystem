@@ -89,12 +89,12 @@ def check(message):
 
 print("Bot Started.....")
 
-bot.polling()
-# while True:
-#     try:
-#         bot.polling(none_stop=True)
-#     except ConnectionError as e:
-#         print(f"Connection error: {e}. Retrying...")
-#         # Implement your retry logic here or just pass to retry on the next loop iteration
-#     except Exception as e:
-#         print(f"An unexpected error occurred: {e}")
+# bot.polling()
+while True:
+    try:
+        bot.polling(none_stop=True)
+    except ConnectionError as e:
+        print(f"Connection error: {e}. Retrying...")
+        # Implement your retry logic here or just pass to retry on the next loop iteration
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
