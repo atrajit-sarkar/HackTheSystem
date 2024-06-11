@@ -3,7 +3,7 @@ import os
 import shutil
 from requests.exceptions import ConnectionError
 
-bot=telebot.TeleBot("7209524999:AAEgkhHSFxwKuHT1ypd96CO_sDDHhyRe9NA")
+bot=telebot.TeleBot("")
 
 @bot.message_handler(commands=['start'])
 def start(message):
