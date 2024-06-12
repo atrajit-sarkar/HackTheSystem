@@ -102,12 +102,12 @@ print("Bot Started.....")
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
-# while True:
-#     try:
-#         bot.polling(none_stop=True)
-#     except ConnectionError as e:
-#         print(f"Connection error: {e}. Retrying...")
-#         # Implement your retry logic here or just pass to retry on the next loop iteration
-#     except Exception as e:
-#         print(f"An unexpected error occurred: {e}")
-bot.polling()
+while True:
+    try:
+        bot.polling(none_stop=True)
+    except ConnectionError as e:
+        print(f"Connection error: {e}. Retrying...")
+        # Implement your retry logic here or just pass to retry on the next loop iteration
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+# bot.polling()
