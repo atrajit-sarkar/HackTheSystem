@@ -44,3 +44,38 @@ cp ./main.py ./main.pyw
 python3 main.py
 ```
 - Cut the file into the startup folder. And here you go.
+
+# Useful Commands List to control the system using bot
+
+### 1. /pwd  
+Print the current working directory.
+### 2. /cd  
+Change the current working directory.
+### 3. /ls 
+ List all the files and folders inside the current working directory.
+### 4. /vim
+Creats a file.
+### 5. /mkdir
+Makes new drectory in the current working directory.
+### 6. /rm 
+removes a file
+### 7. /rmr
+Removes entire directory.
+### 8. /file
+Brings a file into the chat for you from system.
+### 9. /files 
+Brings all files of a directory into the bot chat for you.
+### 10. /cat
+prints the content of a file into the bot chat
+### 11. /chmod
+Change the mode of the file
+### 12. /execute
+Execute a file if it is executable or open a file if it is normal.
+### 13. /check_path 
+Check a file of directory exists or not.
+
+- You can use any CLI commands of LINUX or Windows making .sh file or .bat files respectively.
+- Note that this repository is only for educational purpose and for helping people not affording a pc for ethical hacking and newtworking engineering and any more CLI based works.
+- Also note that this repo is helps you only develop basics of CLI. To learn more you must need to buy a basic pc for running LINUX. No, shortcuts.But atleast I can say this repo will help you to decide whether you will go for CLI based world or not. Then if you are for it it will help you grow interest and then you can buy a basic affordable PC for running your own local CLI. Till then use your friends PC or AWS and many others cloud servers to setup this for learning from telegram which is easy to type and better experience with mobile devices.
+
+- ## Wish you all the best for your future from the developer.
