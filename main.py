@@ -148,9 +148,12 @@ def exec(message):
     bot.register_next_step_handler(message,execute)
 def execute(message):
     try:
-        # os.system(message.text)
-        subprocess.run([f"{os.getcwd()}/{message.text}"], shell=True)
-        bot.reply_to(message,"Execution successful.")
+        if os.path.exists(f"{os.getcwd()}/{message.text}"):
+            os.system(f"{os.getcwd()}/{message.text}")
+            # subprocess.run([f"{os.getcwd()}/{message.text}"], shell=True)
+            bot.reply_to(message,"Execution successful.")
+        else:
+            bot.reply_to(message,"File doesn't exists")
     except:
         bot.reply_to(message,"Execution Unsuccessful")
 
