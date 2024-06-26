@@ -1,3 +1,6 @@
 telebot==0.0.5
 requests==2.32.3
 cryptography==42.0.7
+pyautogui==0.9.54
+numpy==1.26.4
+opencv-python==4.10.0.84
