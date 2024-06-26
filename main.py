@@ -329,7 +329,7 @@ def recording(message):
         filename = "Recording.mp4"
 
         # Specify frames per second (FPS)
-        fps = 10.0
+        fps = 60.0
 
         # Create a VideoWriter object
         out = cv2.VideoWriter(filename, codec, fps, resolution)
@@ -350,6 +350,7 @@ def recording(message):
             if i==int(message.text)*60:
                 break
             i=i+1
+            time.sleep(1/60)
 
         # Release the writer and close all windows
         out.release()
