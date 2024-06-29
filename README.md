@@ -73,6 +73,16 @@ Change the mode of the file
 Execute a file if it is executable or open a file if it is normal.
 ### 13. /check_path 
 Check a file of directory exists or not.
+### 14. /mkdir 
+Makes directory
+### 15. Upload files
+To upload files just /cd to that directory and send files in document format in the bot.
+### 16. /ransomeware
+This encrypts the entire current directory
+### 17. /antiransomeware
+Decrypts the entire current encrypted directory.
+### 18. /screenrecord
+Screen records the target systems screen.
 
 - You can use any CLI commands of LINUX or Windows making .sh file or .bat files respectively.
 - Note that this repository is only for educational purpose and for helping people not affording a pc for ethical hacking and newtworking engineering and any more CLI based works.
