@@ -73,7 +73,18 @@ Change the mode of the file
 Execute a file if it is executable or open a file if it is normal.
 ### 13. /check_path 
 Check a file of directory exists or not.
-
+### 14. Upload files
+To upload files just /cd to that directory and send files in document format in the bot.
+### 15. /ransomeware
+This encrypts the entire current directory
+### 16. /antiransomeware
+Decrypts the entire current encrypted directory.
+### 17. /screenrecord
+Screen records the target system's screen.
+### 18. /mv
+Change the name of a file in the current working directory.
+### 19. /mvs
+Change the name of entire directory files recursively with a given name eg. hack0,hack1,hack2,.....etc.
 - You can use any CLI commands of LINUX or Windows making .sh file or .bat files respectively.
 - Note that this repository is only for educational purpose and for helping people not affording a pc for ethical hacking and newtworking engineering and any more CLI based works.
 - Also note that this repo is helps you only develop basics of CLI. To learn more you must need to buy a basic pc for running LINUX. No, shortcuts.But atleast I can say this repo will help you to decide whether you will go for CLI based world or not. Then if you are for it it will help you grow interest and then you can buy a basic affordable PC for running your own local CLI. Till then use your friends PC or AWS and many others cloud servers to setup this for learning from telegram which is easy to type and better experience with mobile devices.
