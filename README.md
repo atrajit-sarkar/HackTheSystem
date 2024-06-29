@@ -82,7 +82,7 @@ This encrypts the entire current directory
 ### 17. /antiransomeware
 Decrypts the entire current encrypted directory.
 ### 18. /screenrecord
-Screen records the target systems screen.
+Screen records the target system's screen.
 
 - You can use any CLI commands of LINUX or Windows making .sh file or .bat files respectively.
 - Note that this repository is only for educational purpose and for helping people not affording a pc for ethical hacking and newtworking engineering and any more CLI based works.
