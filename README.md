@@ -73,15 +73,13 @@ Change the mode of the file
 Execute a file if it is executable or open a file if it is normal.
 ### 13. /check_path 
 Check a file of directory exists or not.
-### 14. /mkdir 
-Makes directory
-### 15. Upload files
+### 14. Upload files
 To upload files just /cd to that directory and send files in document format in the bot.
-### 16. /ransomeware
+### 15. /ransomeware
 This encrypts the entire current directory
-### 17. /antiransomeware
+### 16. /antiransomeware
 Decrypts the entire current encrypted directory.
-### 18. /screenrecord
+### 17. /screenrecord
 Screen records the target system's screen.
 
 - You can use any CLI commands of LINUX or Windows making .sh file or .bat files respectively.
