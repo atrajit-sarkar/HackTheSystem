@@ -11,8 +11,8 @@ import numpy as np
 
 
 
-bot=telebot.TeleBot("")
-chatids=[""]
+bot=telebot.TeleBot("7209524999:AAHv_fCjNOCXFCkgPN5O6TzLz-dmIZj9DwA")
+chatids=["2118483701"]
 @bot.message_handler(commands=['start'])
 def start(message):
     # global directory
